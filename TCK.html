@@ -1,0 +1,186 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image Upload Page</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .upload-box {
+      border: 2px dashed #64748b;
+      padding: 40px;
+      text-align: center;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .upload-box:hover {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.05);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .preview-container {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .preview-container img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #334155;
+    }
+
+    .btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #38bdf8;
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #0ea5e9;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Upload Images</h1>
+
+    <label class="upload-box" for="fileInput">
+      <p>Click to upload images</p>
+      <p style="margin-top:10px; font-size:14px; color:#94a3b8;">
+        PNG, JPG, JPEG
+      </p>
+    </label>
+
+    <input type="file" id="fileInput" accept="image/*" multiple />
+
+    <div class="preview-container" id="previewContainer"></div>
+
+    <button class="btn" onclick="uploadImages()">
+      Upload
+    </button>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const previewContainer = document.getElementById("previewContainer");
+    const message = document.getElementById("message");
+
+    fileInput.addEventListener("change", function () {
+      previewContainer.innerHTML = "";
+
+      const files = fileInput.files;
+
+      if (files.length === 0) return;
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          previewContainer.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+
+    function uploadImages() {
+      const files = fileInput.files;
+
+      if (files.length === 0) {
+        message.textContent = "Please select images first.";
+        return;
+      }
+
+      // Example upload logic
+      // Replace with your backend API endpoint
+
+      const formData = new FormData();
+
+      Array.from(files).forEach(file => {
+        formData.append("images", file);
+      });
+
+      /*
+      fetch("YOUR_UPLOAD_API_URL", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        message.textContent = "Images uploaded successfully!";
+      })
+      .catch(error => {
+        message.textContent = "Upload failed.";
+      });
+      */
+
+      message.textContent =
+        "Frontend ready. Connect your backend API to upload.";
+    }
+  </script>
+
+</body>
+</html>
+```
